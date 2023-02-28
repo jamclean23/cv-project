@@ -1,14 +1,24 @@
 // Main React App
 
 // ====== IMPORTS ======
-import React from 'react';
+import React, { Component } from 'react';
+import { Overview, GeneralInfo, EducationExperience } from './Components.js';
 
 // ====== Components ======
 
-function App () {
-    return (
-        <h1>Hello world</h1>
-    );
+class App extends Component {
+    constructor(props) {
+        super(props)
+    }
+    render() {
+        return (
+        <div>
+            <Overview />
+            <GeneralInfo/>
+            <EducationExperience/>
+        </div>
+        );
+    }
 }
 
 export {
