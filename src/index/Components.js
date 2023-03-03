@@ -68,7 +68,7 @@ class GeneralInfo extends Component {
                         <input id="phoneNumber" name="phoneNumber" type="text"/>                                
 
                         {/* Submit Button */}
-                        <div id="commitWrapper" className="submitWrapper">
+                        <div id="commitGeneralWrapper" className="submitWrapper">
                             <input type="submit" value="Commit Changes"/>
                         </div>
                     </form>
@@ -84,19 +84,145 @@ class EducationExperience extends Component {
         super(props);
     }
 
+    handleCommit = (event) => {
+        event.preventDefault();
+        console.log(event);
+    }
+
     render() {
         return (
             <div className="EducationalExperience Component">
                 <h2>Educational Experience</h2>
+                <section>
+                    <form className="edEForm" onSubmit={this.handleCommit}>
+                        <p className="intro">Please provide the following information about your
+                             past education:</p>
+
+                        {/* School Name */}
+                        <label htmlFor="schlName">Name of School: </label>
+                        <input id="schlName" type="text"/>
+
+                        {/* Subject */}
+                        <label htmlFor="studyTitle" >Title of Study: </label>
+                        <input id="studyTitle" type="text"/>
+
+                        {/* Date Attended */}
+                        <label htmlFor="dateAttended" >Date Attended:</label>
+                        <input id="dateAttended" type="text"/>
+
+                        {/* Submit Button */}
+                        <div id="commitEdEFormWrapper" className="submitWrapper">
+                            <input type="submit" value="Commit Changes"/>
+                        </div>
+                    </form>
+                </section>
+                <SubmittedExperience/>
             </div>
         );
     }
 }
 
+// Practical Experience
+class PracticalExperience extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    handleCommit = (event) => {
+        event.preventDefault();
+        console.log(event);
+    }
+
+    render() {
+        return (
+            <div className="practical Component">
+                <h2>Practical Experiences</h2>
+                <section>
+                    <form className="practicalForm" onSubmit={this.handleCommit}>
+                        <p className="intro">Please provide the following information about your
+                             past practical experiences:</p>
+
+                        {/* Company Name */}
+                        <label htmlFor="companyName">Name of Company: </label>
+                        <input id="companyName" type="text"/>
+
+                        {/* Position Title */}
+                        <label htmlFor="posTitle">Title of Position: </label>
+                        <input id="posTitle" type="text"/>
+
+                        {/* Responsibilities */}
+                        <label htmlFor="responsibilities">Responsibilities: </label>
+                        <input id="responsibilities" type="text"/>
+
+                        {/* Date of Employment */}
+                        <label htmlFor="dateWrapper">Dates Employed:</label>
+                        <div id="dateWrapper">
+                            <label>Start: </label>
+                            <input type="date" />
+                            <label>End: </label>
+                            <input type="date"/>
+                        </div>
+
+                        {/* Submit Button */}
+                        <div id="commitPracticalWrapper" className="submitWrapper">
+                            <input type="submit" value="Commit Changes"/>
+                        </div>
+                    </form>
+                </section>
+                <SubmittedExperience />
+            </div>
+        );
+    }
+}
+
+class SubmitSection extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(event);
+    }
+
+    render() {
+        return (
+            <div className="submitSection Component">
+                <h2>Review and Submit</h2>
+                <section>
+                    <form className="submitSectionForm" onSubmit={this.handleSubmit}>
+                        <p className="intro">Please review all commited information, and then click Submit to 
+                            generate your Curriculum Vitae</p>
+                        <div id="submitSectionWrapper" className="submitWrapper">
+                            <input type="submit" value="Commit Changes"/>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        );
+    }
+}
+
+
+class SubmittedExperience extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div id="submittedExperience">
+                <h3>Submitted Experience</h3>
+            </div>
+        );
+    }
+}
 // ===== EXPORTS ======
 
 export {
     Overview,
     GeneralInfo,
-    EducationExperience
+    EducationExperience,
+    PracticalExperience,
+    SubmitSection
 }

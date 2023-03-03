@@ -2,7 +2,7 @@
 
 // ====== IMPORTS ======
 import React, { Component } from 'react';
-import { Overview, GeneralInfo, EducationExperience } from './Components.js';
+import { Overview, GeneralInfo, EducationExperience, PracticalExperience, SubmitSection } from './Components.js';
 
 // ====== Components ======
 
@@ -16,6 +16,8 @@ class App extends Component {
             <Overview />
             <GeneralInfo/>
             <EducationExperience/>
+            <PracticalExperience/>
+            <SubmitSection/>
         </div>
         );
     }
