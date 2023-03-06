@@ -215,3 +215,21 @@ label[for="dateWrapper"] {
 #submitSectionWrapper {
     grid-area: submitSectionWrapper;
 }
+
+.experienceItem {
+    background-color: rgb(95, 101, 121);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 2px solid rgb(53, 51, 51);
+    margin-top: 1rem;
+    position: relative;
+    word-break: break-word;
+}
+
+.removeBtn {
+    position: absolute;
+    top: .25rem;
+    right: .25rem;
+    padding: .25rem;
+    border-radius: 4px;;
+}

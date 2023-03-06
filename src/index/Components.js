@@ -341,16 +341,17 @@ class SubmittedExperience extends Component {
             let jsxItem = [];
             for (const property in item) {
                 jsxItem.push( 
-                    <div key={Uniqid()}>
+                    <div className="experienceProp" key={Uniqid()}>
                         <label>{getPropertyLabel(property)}</label>
                         <span>{item[property]}</span>
                     </div>
                 );
             }
-            return jsxItem;
+            return (<div key={Uniqid()} className= "experienceItem">{jsxItem}<button className="removeBtn">X</button></div>);
         });
-
-        return (<div>{itemsJsx}</div>);
+        return (itemsJsx.length > 0)
+            ? (<section>{itemsJsx}</section>)
+            : '';
 
         function getPropertyLabel (property) {
             
