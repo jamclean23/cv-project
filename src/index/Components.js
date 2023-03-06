@@ -347,14 +347,17 @@ class SubmittedExperience extends Component {
                     </div>
                 );
             }
-            return (<div key={Uniqid()} className= "experienceItem">{jsxItem}<button className="removeBtn">X</button></div>);
+            return (<div key={Uniqid()} className= "experienceItem">{jsxItem}<button onClick={logItem.bind(this, item)} className="removeBtn">X</button></div>);
         });
         return (itemsJsx.length > 0)
             ? (<section>{itemsJsx}</section>)
             : '';
 
+        function logItem (item) {
+            console.log(item);
+        }
+
         function getPropertyLabel (property) {
-            
             switch (property) {
                 case 'schoolName':
                     return 'Name of School: ';
