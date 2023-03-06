@@ -4,6 +4,7 @@
 // ====== IMPORTS ======
 
 import React, { Component } from 'react';
+import Uniqid from 'uniqid';
 
 
 // ====== COMPONENTS ======
@@ -192,7 +193,7 @@ class EducationExperience extends Component {
                         </div>
                     </form>
                 </section>
-                <SubmittedExperience/>
+                <SubmittedExperience experience={this.props.schools}/>
             </div>
         );
     }
@@ -273,7 +274,7 @@ class PracticalExperience extends Component {
                         </div>
                     </form>
                 </section>
-                <SubmittedExperience />
+                <SubmittedExperience experience={this.props.jobs}/>
             </div>
         );
     }
@@ -313,10 +314,52 @@ class SubmittedExperience extends Component {
         super(props);
     }
 
+    renderExperience = (experience) => {
+        // Iterate through experience, display contents of each
+        
+        let itemsJsx = experience.map((item) => {
+            let jsxItem = [];
+            for (const property in item) {
+                jsxItem.push( 
+                    <div key={Uniqid()}>
+                        <label>{getPropertyLabel(property)}</label>
+                        <span>{item[property]}</span>
+                    </div>
+                );
+            }
+            return jsxItem;
+        });
+
+        return (<div>{itemsJsx}</div>);
+
+        function getPropertyLabel (property) {
+            
+            switch (property) {
+                case 'schoolName':
+                    return 'Name of School: ';
+                case 'studyTitle':
+                    return 'Title of Study: ';
+                case 'dateStarted':
+                    return 'From: ';
+                case 'dateEnded':
+                    return 'Until: ';
+                case 'companyName':
+                    return 'Name of Company: ';
+                case 'posTitle':
+                    return 'Position Title: ';
+                case 'responsibilities':
+                    return 'Responsibilities: ';
+                default:
+                    return 'NOT FOUND';
+            }
+        }
+    }
+
     render() {
         return (
             <div id="submittedExperience">
                 <h3>Submitted Experience</h3>
+                {this.renderExperience(this.props.experience)}
             </div>
         );
     }
