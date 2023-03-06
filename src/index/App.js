@@ -25,6 +25,9 @@ class App extends Component {
                 education: {
                     schools: []
                 },
+                practical: {
+                    jobs: []
+                }
 
             }
             
@@ -47,7 +50,7 @@ class App extends Component {
             <Overview />
             <GeneralInfo updateMeta={this.updateMeta}/>
             <EducationExperience schools={this.state.meta.education.schools} updateMeta={this.updateMeta}/>
-            <PracticalExperience/>
+            <PracticalExperience jobs={this.state.meta.practical.jobs} updateMeta={this.updateMeta} />
             <SubmitSection/>
         </div>
         );

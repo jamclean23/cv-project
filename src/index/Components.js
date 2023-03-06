@@ -143,18 +143,16 @@ class EducationExperience extends Component {
         event.preventDefault();
         // Make a new object, containing the parent's existing schools and the new item to be added
         const education = {};
-        education.schools = this.props.schools.concat(this.state.meta.schools);
-        this.props.updateMeta({ ...education }, 'education');
+        education.schools = this.props.schools.concat({...this.state.meta.schools});
+        this.props.updateMeta(education, 'education');
     }
 
     handleChange = (field, event) => {
-        let newObj = {...this.state.meta};
         this.setState((state) => {
+            let newObj = {...state.meta};
             newObj.schools[field] = event.target.value;
             return newObj;
-        }, () => {
-            console.log(this.state);
-        })
+        });
     }
 
 
@@ -204,11 +202,34 @@ class EducationExperience extends Component {
 class PracticalExperience extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            meta: {
+                jobs: {
+                    companyName: '',
+                    posTitle: '',
+                    responsibilities: '',
+                    dateStarted: '',
+                    dateEnded: ''
+                }
+            }
+        };
     }
 
     handleCommit = (event) => {
         event.preventDefault();
-        console.log(event);
+        // Make a new object, containing the parent's existing jobs and the new item to be added
+        const practical = {};
+        practical.jobs = this.props.jobs.concat({...this.state.meta.jobs});
+        this.props.updateMeta(practical, 'practical');
+    }
+
+    handleChange = (field, event) => {
+        this.setState((state) => {
+            let newObj = {...state.meta};
+            newObj.jobs[field] = event.target.value;
+            return newObj;
+        });
     }
 
     render() {
@@ -222,23 +243,28 @@ class PracticalExperience extends Component {
 
                         {/* Company Name */}
                         <label htmlFor="companyName">Name of Company: </label>
-                        <input id="companyName" type="text"/>
+                        <input id="companyName" type="text" value={this.state.meta.jobs.companyName} 
+                            onChange={this.handleChange.bind(this, 'companyName')}/>
 
                         {/* Position Title */}
                         <label htmlFor="posTitle">Title of Position: </label>
-                        <input id="posTitle" type="text"/>
+                        <input id="posTitle" type="text" value={this.state.meta.jobs.posTitle} 
+                            onChange={this.handleChange.bind(this, 'posTitle')}/>
 
                         {/* Responsibilities */}
                         <label htmlFor="responsibilities">Responsibilities: </label>
-                        <input id="responsibilities" type="text"/>
+                        <input id="responsibilities" type="text" value={this.state.meta.jobs.responsibilities} 
+                            onChange={this.handleChange.bind(this, 'responsibilities')}/>
 
                         {/* Date of Employment */}
                         <label htmlFor="dateEmployedWrapper">Dates Employed:</label>
                         <div id="dateEmployedWrapper">
                             <label>Start: </label>
-                            <input type="date" />
+                            <input type="date" value={this.state.meta.jobs.dateStarted} 
+                            onChange={this.handleChange.bind(this, 'dateStarted')}/>
                             <label>End: </label>
-                            <input type="date"/>
+                            <input type="date" value={this.state.meta.jobs.dateEnded} 
+                            onChange={this.handleChange.bind(this, 'dateEnded')}/>
                         </div>
 
                         {/* Submit Button */}
