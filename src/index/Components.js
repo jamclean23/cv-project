@@ -32,11 +32,49 @@ class Overview extends Component {
 class GeneralInfo extends Component {
     constructor(props) {
         super(props);
+
+        // Info must be declared in the format of meta > section > field: value
+        this.state = {
+            meta: {
+                name: {
+                    first: '',
+                    middle: '',
+                    last: ''
+                },
+                contact: {
+                    email: '',
+                    phone: ''
+                }
+            },
+            committed: false
+        }
     }
 
     handleCommit = (event) => {
         event.preventDefault();
-        console.log(event);
+        this.props.updateMeta({ ...this.state.meta }, 'general');
+    }
+
+    handleChange = (passedSection, field, event) => {
+
+        this.setState((state) => {
+            let newObj = {...state};
+
+            // Iterate through each section
+            for (const section in newObj.meta) {
+                if (section === passedSection) {
+                    // Iterate through each property in section
+                    for (const property in newObj.meta[section]) {
+                        // If the field of the new content differs from state, assign it to the new object
+                        if (property === field) {
+                            newObj.meta[section][property] = event.target.value;
+                        }
+                    }
+                }
+            }
+            
+            return newObj;
+        });
     }
 
     render() {
@@ -49,23 +87,28 @@ class GeneralInfo extends Component {
 
                         {/* First */}
                         <label id="firstNameLabel" htmlFor="firstName">First Name: </label>
-                        <input id="firstName" name="firstName" type="text"/>
+                        <input id="firstName" name="firstName" type="text" value={this.state.meta.name.first} 
+                            onChange={this.handleChange.bind(this, 'name', 'first')}/>
 
                         {/* Middle */}
                         <label id="middleInitLabel" htmlFor="middleInit">Middle Initial: </label>
-                        <input maxLength={1} id="middleInit" name="middleInit" type="text"/>    
+                        <input maxLength={1} id="middleInit" name="middleInit" type="text" 
+                            value={this.state.meta.name.middle} onChange={this.handleChange.bind(this, 'name', 'middle')}/>    
 
                         {/* Last */}
                         <label id="lastNameLabel" htmlFor="lastName">Last Name: </label>
-                        <input id="lastName" name="lastName" type="text"/>    
+                        <input id="lastName" name="lastName" type="text"
+                            value={this.state.meta.name.last} onChange={this.handleChange.bind(this, 'name', 'last')}/>    
 
                         {/* Email Address */}
                         <label id="emailLabel" htmlFor="email">Email: </label>
-                        <input id="email" name="email" type="text"/>                                
+                        <input id="email" name="email" type="text"
+                            value={this.state.meta.contact.email} onChange={this.handleChange.bind(this, 'contact', 'email')}/>                                
 
                         {/* Phone Number */}
                         <label id="phoneNumberLabel" htmlFor="phoneNumber">Phone Number: </label>
-                        <input id="phoneNumber" name="phoneNumber" type="text"/>                                
+                        <input id="phoneNumber" name="phoneNumber" type="text"
+                            value={this.state.meta.contact.phone} onChange={this.handleChange.bind(this, 'contact', 'phone')}/>                                
 
                         {/* Submit Button */}
                         <div id="commitGeneralWrapper" className="submitWrapper">
@@ -82,12 +125,38 @@ class GeneralInfo extends Component {
 class EducationExperience extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            meta: { 
+                schools: {
+                    schoolName: '',
+                    studyTitle: '',
+                    dateStarted: '',
+                    dateEnded: '',
+                }
+                
+            }
+        };
     }
 
+    
     handleCommit = (event) => {
         event.preventDefault();
-        console.log(event);
+        // Make a new object, containing the parent's existing schools and the new item to be added
+        const education = {};
+        education.schools = this.props.schools.concat(this.state.meta.schools);
+        this.props.updateMeta({ ...education }, 'education');
     }
+
+    handleChange = (field, event) => {
+        let newObj = {...this.state.meta};
+        this.setState((state) => {
+            newObj.schools[field] = event.target.value;
+            return newObj;
+        }, () => {
+            console.log(this.state);
+        })
+    }
+
 
     render() {
         return (
@@ -100,15 +169,24 @@ class EducationExperience extends Component {
 
                         {/* School Name */}
                         <label htmlFor="schlName">Name of School: </label>
-                        <input id="schlName" type="text"/>
+                        <input id="schlName" type="text" value={this.state.meta.schoolName} 
+                            onChange={this.handleChange.bind(this, 'schoolName')}/>
 
                         {/* Subject */}
                         <label htmlFor="studyTitle" >Title of Study: </label>
-                        <input id="studyTitle" type="text"/>
+                        <input id="studyTitle" type="text" value={this.state.meta.studyTitle}
+                         onChange={this.handleChange.bind(this, 'studyTitle')}/>
 
                         {/* Date Attended */}
                         <label htmlFor="dateAttended" >Date Attended:</label>
-                        <input id="dateAttended" type="text"/>
+                        <div id="dateAttended">
+                            <label>Start: </label>
+                            <input type="date" value={this.state.meta.dateStarted} 
+                                 onChange={this.handleChange.bind(this, 'dateStarted')}/>
+                            <label>End: </label>
+                            <input type="date" value={this.state.meta.dateEnded}
+                                 onChange={this.handleChange.bind(this, 'dateEnded')}/>
+                        </div>
 
                         {/* Submit Button */}
                         <div id="commitEdEFormWrapper" className="submitWrapper">
@@ -155,8 +233,8 @@ class PracticalExperience extends Component {
                         <input id="responsibilities" type="text"/>
 
                         {/* Date of Employment */}
-                        <label htmlFor="dateWrapper">Dates Employed:</label>
-                        <div id="dateWrapper">
+                        <label htmlFor="dateEmployedWrapper">Dates Employed:</label>
+                        <div id="dateEmployedWrapper">
                             <label>Start: </label>
                             <input type="date" />
                             <label>End: </label>
@@ -194,7 +272,7 @@ class SubmitSection extends Component {
                         <p className="intro">Please review all commited information, and then click Submit to 
                             generate your Curriculum Vitae</p>
                         <div id="submitSectionWrapper" className="submitWrapper">
-                            <input type="submit" value="Commit Changes"/>
+                            <input type="submit" value="Submit"/>
                         </div>
                     </form>
                 </section>

@@ -140,6 +140,8 @@ label[for="dateAttended"] {
 
 #dateAttended {
     grid-area: dateAttended;
+    display: flex;
+    gap: 1rem;
 }
 
 #commitEdEFormWrapper {
@@ -185,7 +187,7 @@ label[for="dateWrapper"] {
     grid-area: dateWrapperLbl;
 }
 
-#dateWrapper {
+#dateEmployedWrapper {
     grid-area: dateWrapper;
     display: flex;
     gap: 1rem;
