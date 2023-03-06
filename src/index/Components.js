@@ -146,6 +146,17 @@ class EducationExperience extends Component {
         const education = {};
         education.schools = this.props.schools.concat({...this.state.meta.schools});
         this.props.updateMeta(education, 'education');
+
+        // Clear template object
+        this.setState((state) => {
+            let newObj = {...state};
+            for (const property in newObj.meta.schools) {
+                newObj.meta.schools[property] = '';
+            }
+            return newObj;
+        }, () => {
+            console.log(this.state.meta.schools);
+        });
     }
 
     handleChange = (field, event) => {
@@ -168,22 +179,22 @@ class EducationExperience extends Component {
 
                         {/* School Name */}
                         <label htmlFor="schlName">Name of School: </label>
-                        <input id="schlName" type="text" value={this.state.meta.schoolName} 
+                        <input id="schlName" type="text" value={this.state.meta.schools.schoolName} 
                             onChange={this.handleChange.bind(this, 'schoolName')}/>
 
                         {/* Subject */}
                         <label htmlFor="studyTitle" >Title of Study: </label>
-                        <input id="studyTitle" type="text" value={this.state.meta.studyTitle}
+                        <input id="studyTitle" type="text" value={this.state.meta.schools.studyTitle}
                          onChange={this.handleChange.bind(this, 'studyTitle')}/>
 
                         {/* Date Attended */}
                         <label htmlFor="dateAttended" >Date Attended:</label>
                         <div id="dateAttended">
                             <label>Start: </label>
-                            <input type="date" value={this.state.meta.dateStarted} 
+                            <input type="date" value={this.state.meta.schools.dateStarted} 
                                  onChange={this.handleChange.bind(this, 'dateStarted')}/>
                             <label>End: </label>
-                            <input type="date" value={this.state.meta.dateEnded}
+                            <input type="date" value={this.state.meta.schools.dateEnded}
                                  onChange={this.handleChange.bind(this, 'dateEnded')}/>
                         </div>
 
@@ -223,6 +234,15 @@ class PracticalExperience extends Component {
         const practical = {};
         practical.jobs = this.props.jobs.concat({...this.state.meta.jobs});
         this.props.updateMeta(practical, 'practical');
+        
+        // Clear template object
+        this.setState((state) => {
+            let newObj = {...state};
+            for (const property in newObj.meta.jobs) {
+                newObj.meta.jobs[property] = '';
+            }
+            return newObj;
+        });
     }
 
     handleChange = (field, event) => {
