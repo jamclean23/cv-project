@@ -142,9 +142,16 @@ class EducationExperience extends Component {
     
     handleCommit = (event) => {
         event.preventDefault();
+        // Copy the current schools object and assign a non enumerable and unique Id
+        let workingSchool = {...this.state.meta.schools};
+        Object.defineProperty(workingSchool, 'key', {
+            enumerable: false,
+            value: Uniqid()
+        });
+
         // Make a new object, containing the parent's existing schools and the new item to be added
         const education = {};
-        education.schools = this.props.schools.concat({...this.state.meta.schools});
+        education.schools = this.props.schools.concat(workingSchool);
         this.props.updateMeta(education, 'education');
 
         // Clear template object
@@ -154,8 +161,6 @@ class EducationExperience extends Component {
                 newObj.meta.schools[property] = '';
             }
             return newObj;
-        }, () => {
-            console.log(this.state.meta.schools);
         });
     }
 
@@ -204,7 +209,8 @@ class EducationExperience extends Component {
                         </div>
                     </form>
                 </section>
-                <SubmittedExperience experience={this.props.schools}/>
+                <SubmittedExperience removeExperience={this.props.removeExperience} experience={this.props.schools} 
+                    section="education"/>
             </div>
         );
     }
@@ -230,9 +236,17 @@ class PracticalExperience extends Component {
 
     handleCommit = (event) => {
         event.preventDefault();
+
+        // Copy the current schools object and assign a non enumerable and unique Id
+        let workingJob = {...this.state.meta.jobs};
+        Object.defineProperty(workingJob, 'key', {
+            enumerable: false,
+            value: Uniqid()
+        });
+
         // Make a new object, containing the parent's existing jobs and the new item to be added
         const practical = {};
-        practical.jobs = this.props.jobs.concat({...this.state.meta.jobs});
+        practical.jobs = this.props.jobs.concat(workingJob);
         this.props.updateMeta(practical, 'practical');
         
         // Clear template object
@@ -294,7 +308,8 @@ class PracticalExperience extends Component {
                         </div>
                     </form>
                 </section>
-                <SubmittedExperience experience={this.props.jobs}/>
+                <SubmittedExperience removeExperience={this.props.removeExperience} experience={this.props.jobs} 
+                    section="practical"/>
             </div>
         );
     }
@@ -334,7 +349,7 @@ class SubmittedExperience extends Component {
         super(props);
     }
 
-    renderExperience = (experience) => {
+    renderExperience = (experience, removeExperience, section) => {
         // Iterate through experience, display contents of each
         
         let itemsJsx = experience.map((item) => {
@@ -347,15 +362,15 @@ class SubmittedExperience extends Component {
                     </div>
                 );
             }
-            return (<div key={Uniqid()} className= "experienceItem">{jsxItem}<button onClick={logItem.bind(this, item)} className="removeBtn">X</button></div>);
+            return (
+                        <div key={Uniqid()} className="experienceItem">{jsxItem}
+                            <button onClick={removeExperience.bind(this, section, item.key)} className="removeBtn">X</button>
+                        </div>
+                    );
         });
         return (itemsJsx.length > 0)
             ? (<section>{itemsJsx}</section>)
             : '';
-
-        function logItem (item) {
-            console.log(item);
-        }
 
         function getPropertyLabel (property) {
             switch (property) {
@@ -383,7 +398,7 @@ class SubmittedExperience extends Component {
         return (
             <div id="submittedExperience">
                 <h3>Submitted Experience</h3>
-                {this.renderExperience(this.props.experience)}
+                {this.renderExperience(this.props.experience, this.props.removeExperience, this.props.section)}
             </div>
         );
     }
