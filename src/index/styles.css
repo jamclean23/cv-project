@@ -226,10 +226,30 @@ label[for="dateWrapper"] {
     word-break: break-word;
 }
 
-.removeBtn {
+.itemBtnWrapper {
     position: absolute;
     top: .25rem;
-    right: .25rem;
+    right: .25rem; 
+    display: flex;
+}
+
+.removeBtn {
     padding: .25rem;
-    border-radius: 4px;;
+    border-radius: 4px;
+    width: 2rem;
+    height: 2rem;
+}
+
+.editBtn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.editBtn > img {
+    margin-top: .2rem;
+    height: 1rem;
+    width: 1rem;
+    opacity: .8;
 }

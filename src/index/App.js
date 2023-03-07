@@ -63,8 +63,10 @@ class App extends Component {
         <div>
             <Overview />
             <GeneralInfo updateMeta={this.updateMeta}/>
-            <EducationExperience removeExperience={this.removeExperience} schools={this.state.meta.education.schools} updateMeta={this.updateMeta}/>
-            <PracticalExperience removeExperience={this.removeExperience} jobs={this.state.meta.practical.jobs} updateMeta={this.updateMeta} />
+            <EducationExperience removeExperience={this.removeExperience} schools={this.state.meta.education.schools} 
+                updateMeta={this.updateMeta}/>
+            <PracticalExperience removeExperience={this.removeExperience} jobs={this.state.meta.practical.jobs} 
+                updateMeta={this.updateMeta} />
             <SubmitSection/>
         </div>
         );

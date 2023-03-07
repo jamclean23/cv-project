@@ -5,6 +5,7 @@
 
 import React, { Component } from 'react';
 import Uniqid from 'uniqid';
+import editIcon from './assets/edit.png';
 
 
 // ====== COMPONENTS ======
@@ -139,6 +140,20 @@ class EducationExperience extends Component {
         };
     }
 
+    populateFields = (section, experienceItem) => {
+        this.setState((state) => {
+            let newObj = {...state};
+            let itemObj = (section === 'practical') ? 'jobs' : 'schools';
+            // Copy enumerable fields from experienceItem to new object
+
+            for (const property in experienceItem) {
+                newObj.meta[itemObj][property] = experienceItem[property];
+            }
+
+            return newObj;
+
+        });
+    }
     
     handleCommit = (event) => {
         event.preventDefault();
@@ -209,7 +224,7 @@ class EducationExperience extends Component {
                         </div>
                     </form>
                 </section>
-                <SubmittedExperience removeExperience={this.props.removeExperience} experience={this.props.schools} 
+                <SubmittedExperience populateFields={this.populateFields} removeExperience={this.props.removeExperience} experience={this.props.schools} 
                     section="education"/>
             </div>
         );
@@ -232,6 +247,20 @@ class PracticalExperience extends Component {
                 }
             }
         };
+    }
+
+    populateFields = (section, experienceItem) => {
+        this.setState((state) => {
+            let newObj = {...state};
+            let itemObj = (section === 'practical') ? 'jobs' : 'schools';
+            // Copy enumerable fields from experienceItem to new object
+
+            for (const property in experienceItem) {
+                newObj.meta[itemObj][property] = experienceItem[property];
+            }
+
+            return newObj;
+        });
     }
 
     handleCommit = (event) => {
@@ -308,7 +337,7 @@ class PracticalExperience extends Component {
                         </div>
                     </form>
                 </section>
-                <SubmittedExperience removeExperience={this.props.removeExperience} experience={this.props.jobs} 
+                <SubmittedExperience populateFields={this.populateFields} removeExperience={this.props.removeExperience} experience={this.props.jobs} 
                     section="practical"/>
             </div>
         );
@@ -349,6 +378,11 @@ class SubmittedExperience extends Component {
         super(props);
     }
 
+    handleEditClick = (section, item) => {
+        this.props.populateFields(section, item);
+        this.props.removeExperience(section, item.key);
+    }
+
     renderExperience = (experience, removeExperience, section) => {
         // Iterate through experience, display contents of each
         
@@ -364,7 +398,12 @@ class SubmittedExperience extends Component {
             }
             return (
                         <div key={Uniqid()} className="experienceItem">{jsxItem}
-                            <button onClick={removeExperience.bind(this, section, item.key)} className="removeBtn">X</button>
+                            <div className="itemBtnWrapper">
+                                <button onClick={this.handleEditClick.bind(this, section, item)} 
+                                    className="editBtn"><img src={editIcon}/></button>
+                                <button onClick={removeExperience.bind(this, section, item)} 
+                                    className="removeBtn">X</button>
+                            </div>
                         </div>
                     );
         });
