@@ -39,22 +39,28 @@ class App extends Component {
             let newObj = structuredClone(state);
             newObj.meta[section] = childObj;
             return newObj;
-        }, () => {
+        }, callback);
+
+        function callback () {
             console.log(this.state);
-        });
+        }
     }
 
     removeExperience = (section, toDeleteKey) => {
 
-            console.log('click');
-
+            console.log('To Delete Key: ' + toDeleteKey);
             // Determine path to arrays containing items
             let itemArray = (section === 'education') ? 'schools' : 'jobs';
 
             this.setState((state) => {
                 let newObj = structuredClone(state);
 
-                newObj.meta[section][itemArray] = newObj.meta[section][itemArray].filter((item)=> {
+                console.log('STATE');
+                console.log(this.state);
+                console.log('CLONE');
+                console.log(newObj);
+                // Search for an item that matches the key for deletion
+                newObj.meta[section][itemArray] = this.state.meta[section][itemArray].filter((item)=> {
                     return item.key !== toDeleteKey;
                 });
 

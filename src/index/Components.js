@@ -67,7 +67,7 @@ class GeneralInfo extends Component {
             });
             
             // Commit changes to App meta
-            this.props.updateMeta(structuredClone(state.meta), 'general');
+            this.props.updateMeta(structuredClone(state).meta, 'general');
 
         } else if (this.state.committed) {
 
