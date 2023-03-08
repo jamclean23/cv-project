@@ -401,7 +401,7 @@ class SubmittedExperience extends Component {
                             <div className="itemBtnWrapper">
                                 <button onClick={this.handleEditClick.bind(this, section, item)} 
                                     className="editBtn"><img src={editIcon}/></button>
-                                <button onClick={removeExperience.bind(this, section, item)} 
+                                <button onClick={removeExperience.bind(this, section, item.key)} 
                                     className="removeBtn">X</button>
                             </div>
                         </div>

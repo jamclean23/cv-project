@@ -44,6 +44,8 @@ class App extends Component {
 
     removeExperience = (section, toDeleteKey) => {
 
+            console.log('click');
+
             // Determine path to arrays containing items
             let itemArray = (section === 'education') ? 'schools' : 'jobs';
 
