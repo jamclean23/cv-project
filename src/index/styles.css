@@ -253,3 +253,9 @@ label[for="dateWrapper"] {
     width: 1rem;
     opacity: .8;
 }
+
+.styledHtml {
+    width: 100%;
+    background-color: white;
+    color: black;
+}

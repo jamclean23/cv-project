@@ -119,18 +119,34 @@ class GeneralInfo extends Component {
         // Either display text inputs or display committed info
         let intro;
         let first;
+        let middle;
         let commitEditButton;
+        let last;
+        let email;
+        let phone;
 
         if (this.state.committed) {
             intro = <p className="intro"></p>;
             first = <span id="firstName" name="firstName" type="text" 
                 onChange={this.handleChange.bind(this, 'name', 'first')}>{this.state.meta.name.first}</span>;
             commitEditButton = <input type="submit" value="Edit"/>;
+            middle = <span id="middleInit">{this.state.meta.name.middle}</span>;
+            last = <span id="lastName">{this.state.meta.name.last}</span>;
+            email = <span id="email">{this.state.meta.contact.email}</span>
+            phone = <span id="phoneNumber">{this.state.meta.contact.phone}</span>;
         } else {
             intro = <p className="intro">Provide the following information:</p>;
             first = <input id="firstName" name="firstName" type="text" value={this.state.meta.name.first} 
                 onChange={this.handleChange.bind(this, 'name', 'first')}/>;
             commitEditButton = <input type="submit" value="Commit Changes"/>;
+            middle = <input maxLength={1} id="middleInit" name="middleInit" type="text" 
+                value={this.state.meta.name.middle} onChange={this.handleChange.bind(this, 'name', 'middle')}/>;
+            last = <input id="lastName" name="lastName" type="text"
+                value={this.state.meta.name.last} onChange={this.handleChange.bind(this, 'name', 'last')}/>;
+            email = <input id="email" name="email" type="text"
+                value={this.state.meta.contact.email} onChange={this.handleChange.bind(this, 'contact', 'email')}/>;
+            phone = <input id="phoneNumber" name="phoneNumber" type="text"
+                value={this.state.meta.contact.phone} onChange={this.handleChange.bind(this, 'contact', 'phone')}/>;
         }
 
         return (
@@ -147,23 +163,19 @@ class GeneralInfo extends Component {
 
                         {/* Middle */}
                         <label id="middleInitLabel" htmlFor="middleInit">Middle Initial: </label>
-                        <input maxLength={1} id="middleInit" name="middleInit" type="text" 
-                            value={this.state.meta.name.middle} onChange={this.handleChange.bind(this, 'name', 'middle')}/>    
+                        {middle}
 
                         {/* Last */}
                         <label id="lastNameLabel" htmlFor="lastName">Last Name: </label>
-                        <input id="lastName" name="lastName" type="text"
-                            value={this.state.meta.name.last} onChange={this.handleChange.bind(this, 'name', 'last')}/>    
+                        {last}   
 
                         {/* Email Address */}
                         <label id="emailLabel" htmlFor="email">Email: </label>
-                        <input id="email" name="email" type="text"
-                            value={this.state.meta.contact.email} onChange={this.handleChange.bind(this, 'contact', 'email')}/>                                
+                        {email}                                
 
                         {/* Phone Number */}
                         <label id="phoneNumberLabel" htmlFor="phoneNumber">Phone Number: </label>
-                        <input id="phoneNumber" name="phoneNumber" type="text"
-                            value={this.state.meta.contact.phone} onChange={this.handleChange.bind(this, 'contact', 'phone')}/>                                
+                        {phone}
 
                         {/* Submit Button */}
                         <div id="commitGeneralWrapper" className="submitWrapper">
@@ -496,6 +508,75 @@ class SubmittedExperience extends Component {
         );
     }
 }
+
+class StyledHtml extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    renderExperience = (section) => {
+        const itemArray = (section === 'practical') ? 'jobs' : 'schools';
+        let itemsJsx = this.props.state[section][itemArray].map((item) => {
+            
+            let resultArray = [];
+
+            for (const property in item) {
+                resultArray.push(<p>{getPropertyLabel(property)} {item[property]}</p>);
+            }
+
+            return resultArray;
+        });
+
+        function getPropertyLabel (property) {
+            switch (property) {
+                case 'schoolName':
+                    return 'Name of School: ';
+                case 'studyTitle':
+                    return 'Title of Study: ';
+                case 'dateStarted':
+                    return 'From: ';
+                case 'dateEnded':
+                    return 'Until: ';
+                case 'companyName':
+                    return 'Name of Company: ';
+                case 'posTitle':
+                    return 'Position Title: ';
+                case 'responsibilities':
+                    return 'Responsibilities: ';
+                default:
+                    return 'NOT FOUND';
+            }
+        }
+
+
+        console.log(itemsJsx);
+
+        return (
+            <section>
+                {itemsJsx}
+            </section>
+        );
+    }
+
+    render() {
+        const contentObj = this.props.state;
+
+        
+        return(
+        <div className="styledHtml">
+            <h1>{contentObj.general.name.first} {contentObj.general.name.middle} {contentObj.general.name.last}</h1>
+            <span>{contentObj.general.contact.phone}</span>
+            <span>{contentObj.general.contact.email}</span>
+            <h2>Education</h2>
+            {this.renderExperience('education')}
+            <h2>Experience</h2>
+            {this.renderExperience('practical')}
+        </div>
+        );
+    }
+
+}
+
 // ===== EXPORTS ======
 
 export {
@@ -503,5 +584,6 @@ export {
     GeneralInfo,
     EducationExperience,
     PracticalExperience,
-    SubmitSection
+    SubmitSection,
+    StyledHtml
 }

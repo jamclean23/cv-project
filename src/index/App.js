@@ -2,7 +2,7 @@
 
 // ====== IMPORTS ======
 import React, { Component } from 'react';
-import { Overview, GeneralInfo, EducationExperience, PracticalExperience, SubmitSection } from './Components.js';
+import { Overview, GeneralInfo, EducationExperience, PracticalExperience, SubmitSection, StyledHtml } from './Components.js';
 
 // ====== Components ======
 
@@ -28,9 +28,7 @@ class App extends Component {
                 practical: {
                     jobs: []
                 }
-
             }
-            
         }
     }
 
@@ -39,26 +37,17 @@ class App extends Component {
             let newObj = structuredClone(state);
             newObj.meta[section] = childObj;
             return newObj;
-        }, callback);
-
-        function callback () {
-            console.log(this.state);
-        }
+        });
     }
 
     removeExperience = (section, toDeleteKey) => {
 
-            console.log('To Delete Key: ' + toDeleteKey);
             // Determine path to arrays containing items
             let itemArray = (section === 'education') ? 'schools' : 'jobs';
 
             this.setState((state) => {
                 let newObj = structuredClone(state);
 
-                console.log('STATE');
-                console.log(this.state);
-                console.log('CLONE');
-                console.log(newObj);
                 // Search for an item that matches the key for deletion
                 newObj.meta[section][itemArray] = this.state.meta[section][itemArray].filter((item)=> {
                     return item.key !== toDeleteKey;
@@ -78,6 +67,7 @@ class App extends Component {
             <PracticalExperience removeExperience={this.removeExperience} jobs={this.state.meta.practical.jobs} 
                 updateMeta={this.updateMeta} />
             <SubmitSection/>
+            <StyledHtml className="styledHtml" state={this.state.meta}/>
         </div>
         );
     }
