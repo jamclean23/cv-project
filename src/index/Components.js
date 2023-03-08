@@ -41,7 +41,7 @@ class GeneralInfo extends Component {
                 name: {
                     first: '',
                     middle: '',
-                    last: ''
+                    last: '',
                 },
                 contact: {
                     email: '',
@@ -54,13 +54,48 @@ class GeneralInfo extends Component {
 
     handleCommit = (event) => {
         event.preventDefault();
-        this.props.updateMeta({ ...this.state.meta }, 'general');
+
+        let state = this.state;
+
+        if (this.state.committed === false) {
+
+            // Toggle committed status
+            this.setState((state) => {
+                let newObj = structuredClone(state);
+                newObj.committed = true;
+                return newObj;
+            });
+            
+            // Commit changes to App meta
+            this.props.updateMeta(structuredClone(state.meta), 'general');
+
+        } else if (this.state.committed) {
+
+            // Toggle committed status
+            this.setState((state) => {
+                let newObj = structuredClone(state);
+                newObj.committed = false;
+                return newObj;
+            });
+
+            // set newObj to default and send to updateMeta
+            let newObj = structuredClone(state);
+
+            for (const section in newObj.meta) {
+                for (const property in newObj.meta[section]) {
+                    newObj.meta[section][property] = '';
+                }
+            }
+
+            this.props.updateMeta(newObj.meta, 'general');
+            
+        }
     }
 
     handleChange = (passedSection, field, event) => {
 
         this.setState((state) => {
-            let newObj = {...state};
+            let newObj = structuredClone(state);
 
             // Iterate through each section
             for (const section in newObj.meta) {
@@ -80,17 +115,35 @@ class GeneralInfo extends Component {
     }
 
     render() {
+
+        // Either display text inputs or display committed info
+        let intro;
+        let first;
+        let commitEditButton;
+
+        if (this.state.committed) {
+            intro = <p className="intro"></p>;
+            first = <span id="firstName" name="firstName" type="text" 
+                onChange={this.handleChange.bind(this, 'name', 'first')}>{this.state.meta.name.first}</span>;
+            commitEditButton = <input type="submit" value="Edit"/>;
+        } else {
+            intro = <p className="intro">Provide the following information:</p>;
+            first = <input id="firstName" name="firstName" type="text" value={this.state.meta.name.first} 
+                onChange={this.handleChange.bind(this, 'name', 'first')}/>;
+            commitEditButton = <input type="submit" value="Commit Changes"/>;
+        }
+
         return (
             <div className="GeneralInfo Component">
                 <h2>General Information</h2>
                 <section>
                     <form className="generalForm" onSubmit={this.handleCommit}>
-                        <p className="intro">Provide the following information:</p>
+                        {/* Introduction Message */}
+                        {intro}
 
                         {/* First */}
                         <label id="firstNameLabel" htmlFor="firstName">First Name: </label>
-                        <input id="firstName" name="firstName" type="text" value={this.state.meta.name.first} 
-                            onChange={this.handleChange.bind(this, 'name', 'first')}/>
+                        {first}
 
                         {/* Middle */}
                         <label id="middleInitLabel" htmlFor="middleInit">Middle Initial: </label>
@@ -114,7 +167,7 @@ class GeneralInfo extends Component {
 
                         {/* Submit Button */}
                         <div id="commitGeneralWrapper" className="submitWrapper">
-                            <input type="submit" value="Commit Changes"/>
+                            {commitEditButton}
                         </div>
                     </form>
                 </section>
@@ -142,7 +195,7 @@ class EducationExperience extends Component {
 
     populateFields = (section, experienceItem) => {
         this.setState((state) => {
-            let newObj = {...state};
+            let newObj = structuredClone(state);
             let itemObj = (section === 'practical') ? 'jobs' : 'schools';
             // Copy enumerable fields from experienceItem to new object
 
@@ -157,8 +210,9 @@ class EducationExperience extends Component {
     
     handleCommit = (event) => {
         event.preventDefault();
+        let state = this.state;
         // Copy the current schools object and assign a non enumerable and unique Id
-        let workingSchool = {...this.state.meta.schools};
+        let workingSchool = structuredClone(state.meta.schools);
         Object.defineProperty(workingSchool, 'key', {
             enumerable: false,
             value: Uniqid()
@@ -171,7 +225,7 @@ class EducationExperience extends Component {
 
         // Clear template object
         this.setState((state) => {
-            let newObj = {...state};
+            let newObj = structuredClone(state);
             for (const property in newObj.meta.schools) {
                 newObj.meta.schools[property] = '';
             }
@@ -181,8 +235,8 @@ class EducationExperience extends Component {
 
     handleChange = (field, event) => {
         this.setState((state) => {
-            let newObj = {...state.meta};
-            newObj.schools[field] = event.target.value;
+            let newObj = structuredClone(state);
+            newObj.meta.schools[field] = event.target.value;
             return newObj;
         });
     }
@@ -251,7 +305,7 @@ class PracticalExperience extends Component {
 
     populateFields = (section, experienceItem) => {
         this.setState((state) => {
-            let newObj = {...state};
+            let newObj = structuredClone(state);
             let itemObj = (section === 'practical') ? 'jobs' : 'schools';
             // Copy enumerable fields from experienceItem to new object
 
@@ -267,7 +321,8 @@ class PracticalExperience extends Component {
         event.preventDefault();
 
         // Copy the current schools object and assign a non enumerable and unique Id
-        let workingJob = {...this.state.meta.jobs};
+        let state = this.state;
+        let workingJob = structuredClone(state.meta.jobs);
         Object.defineProperty(workingJob, 'key', {
             enumerable: false,
             value: Uniqid()
@@ -280,7 +335,7 @@ class PracticalExperience extends Component {
         
         // Clear template object
         this.setState((state) => {
-            let newObj = {...state};
+            let newObj = structuredClone(state);
             for (const property in newObj.meta.jobs) {
                 newObj.meta.jobs[property] = '';
             }
@@ -290,8 +345,8 @@ class PracticalExperience extends Component {
 
     handleChange = (field, event) => {
         this.setState((state) => {
-            let newObj = {...state.meta};
-            newObj.jobs[field] = event.target.value;
+            let newObj = structuredClone(state);
+            newObj.meta.jobs[field] = event.target.value;
             return newObj;
         });
     }
@@ -351,7 +406,6 @@ class SubmitSection extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log(event);
     }
 
     render() {

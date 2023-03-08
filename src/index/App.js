@@ -36,9 +36,11 @@ class App extends Component {
 
     updateMeta = (childObj, section) => {
         this.setState((state) => {
-            let newObj = {...state};
+            let newObj = structuredClone(state);
             newObj.meta[section] = childObj;
             return newObj;
+        }, () => {
+            console.log(this.state);
         });
     }
 
@@ -50,7 +52,7 @@ class App extends Component {
             let itemArray = (section === 'education') ? 'schools' : 'jobs';
 
             this.setState((state) => {
-                let newObj = {...state};
+                let newObj = structuredClone(state);
 
                 newObj.meta[section][itemArray] = newObj.meta[section][itemArray].filter((item)=> {
                     return item.key !== toDeleteKey;
