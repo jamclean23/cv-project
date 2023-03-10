@@ -521,10 +521,25 @@ class StyledHtml extends Component {
             let resultArray = [];
 
             for (const property in item) {
-                resultArray.push(<p>{getPropertyLabel(property)} {item[property]}</p>);
+                let content;
+
+                if (property === 'schoolName' || property === 'companyName') {
+                    content = <p className="cvExperienceName" key={Uniqid()}>{item[property]}</p>;
+                } else if (property === 'studyTitle' || property === 'posTitle') {
+                    content = <p className="cvExperienceTitle" key={Uniqid()}>{item[property]}<span>{item.dateStarted} to {item.dateEnded}</span></p>;
+                } else if (property === 'dateStarted' || property === 'dateEnded') {
+                    content = '';
+                } else {
+                    content = <p key={Uniqid()}>{getPropertyLabel(property)} {item[property]}</p>;
+                }
+
+                resultArray.push(content);
             }
 
-            return resultArray;
+            return (
+                <div className="experienceOutput" key={Uniqid()}>
+                    {resultArray}
+                </div>);
         });
 
         function getPropertyLabel (property) {
@@ -548,11 +563,8 @@ class StyledHtml extends Component {
             }
         }
 
-
-        console.log(itemsJsx);
-
         return (
-            <section>
+            <section className="cvSection" key={Uniqid()}>
                 {itemsJsx}
             </section>
         );
@@ -564,12 +576,16 @@ class StyledHtml extends Component {
         
         return(
         <div className="styledHtml">
-            <h1>{contentObj.general.name.first} {contentObj.general.name.middle} {contentObj.general.name.last}</h1>
-            <span>{contentObj.general.contact.phone}</span>
-            <span>{contentObj.general.contact.email}</span>
-            <h2>Education</h2>
+            <h2 className="cvName">{contentObj.general.name.first} {contentObj.general.name.middle} {contentObj.general.name.last}</h2>
+            <div className="cvContacts">
+                <span>{contentObj.general.contact.phone}</span>
+                <span>*</span>
+                <span>{contentObj.general.contact.email}</span>
+            </div>
+
+            <h2 className="cvHeader">Education</h2>
             {this.renderExperience('education')}
-            <h2>Experience</h2>
+            <h2 className="cvHeader">Experience</h2>
             {this.renderExperience('practical')}
         </div>
         );

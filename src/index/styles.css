@@ -255,7 +255,65 @@ label[for="dateWrapper"] {
 }
 
 .styledHtml {
-    width: 100%;
+    all: revert;
     background-color: white;
     color: black;
+    padding: 2rem;
+}
+
+.styledHtml * {
+    all: revert;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.cvSection {
+    padding-inline: 10rem;
+}
+
+.experienceOutput {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cvName {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: .5rem;
+}
+
+.cvContacts {
+    display: grid;
+    gap: .5rem;
+    width: 100%;
+    grid-template-columns: 1fr 2ch 1fr;
+    justify-content: center;
+    justify-items: center;
+}
+
+.cvContacts > :nth-child(1) {
+    justify-self: right;
+}
+
+.cvContacts > :nth-child(3) {
+    justify-self: left;
+}
+
+.cvHeader {
+    margin-top: 3rem;
+    padding-bottom: 1rem;
+    margin-inline: 10rem;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid black;
+}
+
+.cvExperienceName {
+    font-weight: bold;
+}
+
+.cvExperienceTitle {
+    display: flex;
+    justify-content: space-between;
 }
