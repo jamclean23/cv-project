@@ -2,7 +2,6 @@
 
 
 // ====== IMPORTS ======
-
 import React, { Component } from 'react';
 import Uniqid from 'uniqid';
 import editIcon from './assets/edit.png';
@@ -418,6 +417,7 @@ class SubmitSection extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        console.log(html2pdf);
     }
 
     render() {
